@@ -39,4 +39,55 @@ export class FileUploadComponent {
     console.log('Image submitted:', this.selectedImage);
     // Logique de traitement après soumission
   }
+  onDragOver(event: DragEvent): void {
+    event.preventDefault(); // Empêche le comportement par défaut (comme l'ouverture du fichier dans le navigateur)
+    event.stopPropagation();
+    console.log('Drag over event detected');
+  }
+  
+  onDragLeave(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    console.log('Drag leave event detected');
+  }
+  
+  onDrop(event: DragEvent): void {
+    event.preventDefault(); // Empêche le comportement par défaut
+    event.stopPropagation();
+  
+    if (event.dataTransfer && event.dataTransfer.files.length > 0) {
+      const file = event.dataTransfer.files[0];
+      const reader = new FileReader();
+  
+      reader.onload = () => {
+        this.selectedImage = reader.result; // Charge le fichier comme URL base64
+      };
+  
+      reader.readAsDataURL(file); // Charge le fichier en base64
+      console.log('File dropped:', file.name);
+    }
+  }
+  onPaste(event: ClipboardEvent): void {
+    // Vérifiez si l'événement contient des fichiers
+    if (event.clipboardData) {
+      const items = event.clipboardData.items;
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        if (item.type.startsWith('image/')) {
+          const file = item.getAsFile();
+          if (file) {
+            const reader = new FileReader();
+  
+            reader.onload = () => {
+              this.selectedImage = reader.result; // Charge l'image comme URL base64
+            };
+  
+            reader.readAsDataURL(file);
+            console.log('Image pasted:', file.name);
+          }
+        }
+      }
+    }
+  }
+  
 }
