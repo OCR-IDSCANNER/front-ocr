@@ -1,0 +1,31 @@
+<div class="upload-container">
+    <div class="upload-left">
+      <div class="upload-header">
+        <p>Drop, Upload or Paste image</p>
+        <p>Supported formats: JPG, PNG, GIF, JFIF (JPEG), HEIC, PDF</p>
+      </div>
+      <!-- Bouton Browse -->
+      <div class="upload-actions">
+        <button class="browse-button" (click)="fileInput.click()">📂 Browse</button>
+        <input
+          type="file"
+          #fileInput
+          (change)="onFileSelect($event)"
+          style="display: none;"
+        />
+      </div>
+    </div>
+  
+    <!-- Aperçu de l'image sélectionnée -->
+    <div *ngIf="selectedImage" class="upload-right">
+      <h3>Selected Image:</h3>
+      <img [src]="selectedImage" alt="Preview" class="preview-image" />
+      <div class="button-group">
+        <button (click)="onSubmit()" class="submit-button">Submit</button>
+        <button (click)="clearSelection()" class="clear-button">Clear</button>
+      </div>
+    </div>
+  </div>
+  
+  
+  
