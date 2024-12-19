@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { FileUploadComponent } from './components/file-upload/file-upload.component';
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule,FileUploadComponent],
   template: `
     <div>
       <router-outlet></router-outlet>

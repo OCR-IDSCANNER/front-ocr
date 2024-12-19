@@ -7,7 +7,7 @@
 >
   <div class="upload-left">
     <div class="upload-header">
-      <p>Drop, Upload or Paste image</p>
+      <p>Drop, Upload, or Paste image</p>
       <p>Supported formats: JPG, PNG, JPEG</p>
     </div>
     <div class="upload-actions">
@@ -31,4 +31,50 @@
   </div>
 </div>
 
-  
+<div class="form-container">
+  <form (ngSubmit)="onFormSubmit()">
+    <div class="form-group">
+      <label for="carteType">Student Carte:</label>
+      <input
+        type="text"
+        id="carteType"
+        [(ngModel)]="carteType"
+        name="carteType"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="studentName">Student Name :</label>
+      <input
+        type="text"
+        id="studentName"
+        [(ngModel)]="studentName"
+        name="studentName"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="schoolYear">School Year:</label>
+      <input
+        type="text"
+        id="schoolYear"
+        [(ngModel)]="schoolYear"
+        name="schoolYear"
+        required
+      />
+    </div>
+    
+    <div class="form-group">
+      <label for="SchoolAdress">School Adress:</label>
+      <input
+        type="text"
+        id="SchoolAdress"
+        [(ngModel)]="idCode"
+        name="SchoolAdress"
+        required
+      />
+    </div>
+    
+    <button type="submit" class="form-submit-button">Submit</button>
+  </form>
+</div>
