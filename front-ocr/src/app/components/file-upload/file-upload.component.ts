@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Import de CommonModule nécessaire pour *ngIf
+import { FormsModule } from '@angular/forms'; // Import FormsModule
 
 @Component({
   selector: 'app-file-upload',
   standalone: true,
-  imports: [CommonModule], // Importer CommonModule pour les directives comme *ngIf
+  imports: [CommonModule,FormsModule], // Importer CommonModule pour les directives comme *ngIf
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.css'],
 })
@@ -12,6 +13,14 @@ export class FileUploadComponent {
   fileUrl: string = ''; // Déclaration pour ngModel
 
   selectedImage: string | ArrayBuffer | null = null;
+
+    // Form data properties
+    carteType: string = '';
+    studentName: string = '';
+    schoolYear: string = '';
+    studentLevel: string = '';
+    idCode: string = '';
+    schoolName: string = '';
 
   // Méthode pour gérer la sélection de fichier
   onFileSelect(event: Event): void {
@@ -33,12 +42,22 @@ export class FileUploadComponent {
     this.selectedImage = null;
     this.fileUrl = ''; // Réinitialise également l'URL manuelle si nécessaire
   }
+  onFormSubmit(): void {
+    console.log('Form Submitted:');
+    console.log('Carte Type:', this.carteType);
+    console.log('Student Name:', this.studentName);
+    console.log('Year of School:', this.schoolYear);
+    console.log('Student Level:', this.studentLevel);
+    console.log('ID Code:', this.idCode);
+    console.log('School Name:', this.schoolName);
+  }
 
   // Méthode pour gérer le submit
   onSubmit(): void {
     console.log('Image submitted:', this.selectedImage);
     // Logique de traitement après soumission
   }
+    
   onDragOver(event: DragEvent): void {
     event.preventDefault(); // Empêche le comportement par défaut (comme l'ouverture du fichier dans le navigateur)
     event.stopPropagation();
