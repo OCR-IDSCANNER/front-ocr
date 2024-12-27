@@ -1,96 +1,93 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common'; // Import de CommonModule nécessaire pour *ngIf
+import { FormsModule } from '@angular/forms'; // Import FormsModule
 
 @Component({
   selector: 'app-file-upload',
   standalone: true,
-  imports: [CommonModule, FormsModule,HttpClientModule],
+  imports: [CommonModule,FormsModule], // Importer CommonModule pour les directives comme *ngIf
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.css'],
 })
 export class FileUploadComponent {
-  selectedImage: string | ArrayBuffer | null = null; 
-  imageFile: File | null = null; 
-  apiResponse: any = {};
+  fileUrl: string = ''; // Déclaration pour ngModel
 
-  studentName: string = '';
-  schoolYear: string = '';
-  studentLevel: string = '';
-  schoolAdress: string = '';
-  idCode: string = '';
+  selectedImage: string | ArrayBuffer | null = null;
 
-  constructor(private http: HttpClient) {}
+    // Form data properties
+    carteType: string = '';
+    studentName: string = '';
+    schoolYear: string = '';
+    studentLevel: string = '';
+    idCode: string = '';
+    schoolName: string = '';
 
+  // Méthode pour gérer la sélection de fichier
   onFileSelect(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      this.imageFile = input.files[0];
+      const file = input.files[0];
       const reader = new FileReader();
 
       reader.onload = () => {
-        this.selectedImage = reader.result; 
+        this.selectedImage = reader.result; // Contient l'URL de l'image en base64
       };
 
-      reader.readAsDataURL(this.imageFile); 
+      reader.readAsDataURL(file); // Charge le fichier comme URL base64
     }
   }
 
-  onSubmit(): void {
-    if (!this.imageFile) {
-      console.error('No image selected!');
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('image', this.imageFile); 
-
-    this.http.post('http://localhost:8180/ocr', formData).subscribe({
-      next: (response) => {
-        console.log('API Response:', response);
-        this.apiResponse = response;
-
-        this.studentName = this.apiResponse?.nom_etudiant || '';
-        this.schoolYear = this.apiResponse?.annee_unv || '';
-        this.studentLevel = this.apiResponse?.niveau || '';
-        this.schoolAdress = this.apiResponse?.text || '';
-      },
-      error: (error) => {
-        console.error('Error:', error);
-      },
-    });
-  }
-
+  // Méthode pour réinitialiser la sélection
   clearSelection(): void {
     this.selectedImage = null;
-    this.imageFile = null;
-    this.apiResponse = null;
+    this.fileUrl = ''; // Réinitialise également l'URL manuelle si nécessaire
+  }
+  onFormSubmit(): void {
+    console.log('Form Submitted:');
+    console.log('Carte Type:', this.carteType);
+    console.log('Student Name:', this.studentName);
+    console.log('Year of School:', this.schoolYear);
+    console.log('Student Level:', this.studentLevel);
+    console.log('ID Code:', this.idCode);
+    console.log('School Name:', this.schoolName);
   }
 
+  // Méthode pour gérer le submit
+  onSubmit(): void {
+    console.log('Image submitted:', this.selectedImage);
+    // Logique de traitement après soumission
+  }
+    
   onDragOver(event: DragEvent): void {
-    event.preventDefault();
+    event.preventDefault(); // Empêche le comportement par défaut (comme l'ouverture du fichier dans le navigateur)
+    event.stopPropagation();
+    console.log('Drag over event detected');
   }
-
+  
   onDragLeave(event: DragEvent): void {
     event.preventDefault();
+    event.stopPropagation();
+    console.log('Drag leave event detected');
   }
-
+  
   onDrop(event: DragEvent): void {
-    event.preventDefault();
+    event.preventDefault(); // Empêche le comportement par défaut
+    event.stopPropagation();
+  
     if (event.dataTransfer && event.dataTransfer.files.length > 0) {
-      this.imageFile = event.dataTransfer.files[0];
+      const file = event.dataTransfer.files[0];
       const reader = new FileReader();
-
+  
       reader.onload = () => {
-        this.selectedImage = reader.result; 
+        this.selectedImage = reader.result; // Charge le fichier comme URL base64
       };
-
-      reader.readAsDataURL(this.imageFile);
+  
+      reader.readAsDataURL(file); // Charge le fichier en base64
+      console.log('File dropped:', file.name);
     }
   }
-
   onPaste(event: ClipboardEvent): void {
+    // Vérifiez si l'événement contient des fichiers
     if (event.clipboardData) {
       const items = event.clipboardData.items;
       for (let i = 0; i < items.length; i++) {
@@ -98,17 +95,18 @@ export class FileUploadComponent {
         if (item.type.startsWith('image/')) {
           const file = item.getAsFile();
           if (file) {
-            this.imageFile = file;
             const reader = new FileReader();
-
+  
             reader.onload = () => {
-              this.selectedImage = reader.result;
+              this.selectedImage = reader.result; // Charge l'image comme URL base64
             };
-
+  
             reader.readAsDataURL(file);
+            console.log('Image pasted:', file.name);
           }
         }
       }
     }
   }
+  
 }

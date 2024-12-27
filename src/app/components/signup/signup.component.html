@@ -1,0 +1,54 @@
+<div class="login-container">
+    <form class="login-form" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+      <h2>Sign Up</h2>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input 
+          type="text" 
+          id="name" 
+          formControlName="name"
+          placeholder="Enter your name" 
+          required 
+        />
+        <div *ngIf="signupForm.get('name')?.errors?.['required'] && signupForm.get('name')?.touched">
+          Name is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input 
+          type="email" 
+          id="email" 
+          formControlName="email"
+          placeholder="Enter your email" 
+          required 
+        />
+        <div *ngIf="signupForm.get('email')?.errors?.['required'] && signupForm.get('email')?.touched">
+          Email is required
+        </div>
+        <div *ngIf="signupForm.get('email')?.errors?.['email'] && signupForm.get('email')?.touched">
+          Please enter a valid email
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input 
+          type="password" 
+          id="password" 
+          formControlName="password"
+          placeholder="Enter your password" 
+          required 
+        />
+        <div *ngIf="signupForm.get('password')?.errors?.['required'] && signupForm.get('password')?.touched">
+          Password is required
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="!signupForm.valid">Sign Up</button>
+      <p class="signin-redirect">
+        Already have an account? <a routerLink="/signin">Sign In</a>
+      </p>
+    </form>
+</div>

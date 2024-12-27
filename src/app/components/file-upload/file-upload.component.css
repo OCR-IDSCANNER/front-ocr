@@ -91,13 +91,15 @@
   display: flex; /* Enables flexbox */
   justify-content: left; /* Centers the form horizontally */
   align-items: left; /* Centers the form vertically */
-  height: 70vh; /* Makes the container fill the viewport height */
-  margin: 0 auto; /* Center horizontally */
-  padding: 20px;
-  border: 2px solid #ccc;
-  border-radius: 10px;
-  background-color: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px; /* Ajoute plus d'espace interne */
+  border: 2px solid #ccc; /* Bordure plus épaisse */
+  border-radius: 10px; /* Coins légèrement arrondis */
+  width: 90%; /* Augmente la largeur du conteneur */
+  max-width: 1200px; /* Limite la largeur maximale */
+  margin: 30px auto; /* Centrer le conteneur sur la page */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Effet d'ombre pour une meilleure visibilité */
+  background-color: #f9f9f9;
+  
 }
 
 .form-group {
