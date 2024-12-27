@@ -92,12 +92,13 @@
   justify-content: left; /* Centers the form horizontally */
   align-items: left; /* Centers the form vertically */
   height: 70vh; /* Makes the container fill the viewport height */
-  margin: 0 auto; /* Center horizontally */
+  margin: 30px auto; /* Center horizontally */
   padding: 20px;
   border: 2px solid #ccc;
   border-radius: 10px;
   background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
 }
 
 .form-group {
