@@ -38,7 +38,7 @@
       <input
         type="text"
         id="carteType"
-        [(ngModel)]="carteType"
+        [(ngModel)]="cardType"
         name="carteType"
         required
       />
@@ -59,7 +59,7 @@
         type="text"
         id="schoolYear"
         [(ngModel)]="schoolYear"
-        name="schoolYear"
+        name="schoolYear" 
         required
       />
     </div>
@@ -68,7 +68,7 @@
       <input
         type="text"
         id="SchoolLevel"
-        [(ngModel)]="idCode"
+        [(ngModel)]="studentLevel"
         name="SchoolLevel"
         required
       />
@@ -77,13 +77,15 @@
       <label for="SchoolAdress">School Adress:</label>
       <input
         type="text"
+        [(ngModel)]="schoolAdress"
         id="SchoolAdress"
-        [(ngModel)]="idCode"
         name="SchoolAdress"
         required
       />
     </div>
     
-    <button type="submit" class="form-submit-button">Submit</button>
+    <button type="submit" class="form-submit-button" (click)="onSubmit2()">Submit</button>
+    
+    <button type="submit" class="form-submit-button" (click)="generatePDF()">download pdf</button>
   </form>
 </div>

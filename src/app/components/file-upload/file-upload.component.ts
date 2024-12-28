@@ -1,93 +1,171 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Import de CommonModule nécessaire pour *ngIf
-import { FormsModule } from '@angular/forms'; // Import FormsModule
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-file-upload',
   standalone: true,
-  imports: [CommonModule,FormsModule], // Importer CommonModule pour les directives comme *ngIf
+  imports: [CommonModule, FormsModule,HttpClientModule],
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.css'],
 })
 export class FileUploadComponent {
-  fileUrl: string = ''; // Déclaration pour ngModel
+  selectedImage: string | ArrayBuffer | null = null; 
+  imageFile: File | null = null; 
+  apiResponse: any = {};
 
-  selectedImage: string | ArrayBuffer | null = null;
+  cardType: boolean = false;
+  studentName: string = '';
+  schoolYear: string = '';
+  studentLevel: string = '';
+  schoolAdress: string = '';
+  idCode: string = '';
 
-    // Form data properties
-    carteType: string = '';
-    studentName: string = '';
-    schoolYear: string = '';
-    studentLevel: string = '';
-    idCode: string = '';
-    schoolName: string = '';
+  constructor(private http: HttpClient) {}
 
-  // Méthode pour gérer la sélection de fichier
   onFileSelect(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      const file = input.files[0];
+      this.imageFile = input.files[0];
       const reader = new FileReader();
 
       reader.onload = () => {
-        this.selectedImage = reader.result; // Contient l'URL de l'image en base64
+        this.selectedImage = reader.result; 
       };
 
-      reader.readAsDataURL(file); // Charge le fichier comme URL base64
+      reader.readAsDataURL(this.imageFile); 
     }
   }
 
-  // Méthode pour réinitialiser la sélection
+  onSubmit(): void {
+    if (!this.imageFile) {
+      console.error('No image selected!');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', this.imageFile); 
+
+    this.http.post('http://localhost:8180/ocr', formData).subscribe({
+      next: (response) => {
+        console.log('API Response:', response);
+        this.apiResponse = response;
+
+        this.studentName = this.apiResponse?.nom_etudiant || '';
+        this.schoolYear = this.apiResponse?.annee_unv || '';
+        this.studentLevel = this.apiResponse?.niveau || '';
+        this.schoolAdress = '5 Lot Bouizgren-Route de Safi Marrakech';
+        this.cardType= this.apiResponse?.is_student_card || '';
+      },
+      error: (error) => {
+        console.error('Error:', error);
+      },
+    });
+  }
+  onSubmit2():void{
+    const requestBody = {
+      cardType: this.cardType,
+      studentName: this.studentName,
+      schoolYear: this.schoolYear,
+      studentLevel: this.studentLevel,
+      schoolAdress: this.schoolAdress,
+    };
+    this.http.post('http://localhost:8081/api/card', requestBody).subscribe({
+      next: (response) => {
+        console.log('API Response:', response);
+        this.apiResponse = response;
+      },
+      error: (error) => {
+        console.error('Error:', error);
+      },
+    });
+  }
+
+  generatePDF(): void {
+    // Create new PDF document
+    const doc = new jsPDF();
+    
+    // Set font
+    doc.setFont("helvetica");
+    
+    // Add title
+    doc.setFontSize(20);
+    doc.text("Student Information Card", 105, 20, { align: 'center' });
+    
+    // Set font size for content
+    doc.setFontSize(12);
+    
+    // Add content with proper spacing
+    const startY = 40;
+    const lineHeight = 10;
+    
+    // Add school logo/header
+    doc.setFontSize(16);
+    doc.text("School Information", 20, startY);
+    doc.setFontSize(12);
+    
+    // Add a line under the header
+    doc.setLineWidth(0.5);
+    doc.line(20, startY + 5, 190, startY + 5);
+    
+    // Add form information
+    let currentY = startY + 20;
+    
+    doc.text(`Student Card Type: ${this.cardType ? 'Valid' : 'Invalid'}`, 20, currentY);
+    currentY += lineHeight + 5;
+    
+    doc.text(`Student Name: ${this.studentName}`, 20, currentY);
+    currentY += lineHeight + 5;
+    
+    doc.text(`School Year: ${this.schoolYear}`, 20, currentY);
+    currentY += lineHeight + 5;
+    
+    doc.text(`School Level: ${this.studentLevel}`, 20, currentY);
+    currentY += lineHeight + 5;
+    
+    doc.text(`School Address: ${this.schoolAdress}`, 20, currentY);
+    currentY += lineHeight + 15;
+    
+    // Add footer
+    doc.setFontSize(10);
+    const currentDate = new Date().toLocaleDateString();
+    doc.text(`Generated on: ${currentDate}`, 20, 280);
+    
+    // Save PDF
+    doc.save('student_information.pdf');
+  }
+
   clearSelection(): void {
     this.selectedImage = null;
-    this.fileUrl = ''; // Réinitialise également l'URL manuelle si nécessaire
-  }
-  onFormSubmit(): void {
-    console.log('Form Submitted:');
-    console.log('Carte Type:', this.carteType);
-    console.log('Student Name:', this.studentName);
-    console.log('Year of School:', this.schoolYear);
-    console.log('Student Level:', this.studentLevel);
-    console.log('ID Code:', this.idCode);
-    console.log('School Name:', this.schoolName);
+    this.imageFile = null;
+    this.apiResponse = null;
   }
 
-  // Méthode pour gérer le submit
-  onSubmit(): void {
-    console.log('Image submitted:', this.selectedImage);
-    // Logique de traitement après soumission
-  }
-    
   onDragOver(event: DragEvent): void {
-    event.preventDefault(); // Empêche le comportement par défaut (comme l'ouverture du fichier dans le navigateur)
-    event.stopPropagation();
-    console.log('Drag over event detected');
+    event.preventDefault();
   }
-  
+
   onDragLeave(event: DragEvent): void {
     event.preventDefault();
-    event.stopPropagation();
-    console.log('Drag leave event detected');
   }
-  
+
   onDrop(event: DragEvent): void {
-    event.preventDefault(); // Empêche le comportement par défaut
-    event.stopPropagation();
-  
+    event.preventDefault();
     if (event.dataTransfer && event.dataTransfer.files.length > 0) {
-      const file = event.dataTransfer.files[0];
+      this.imageFile = event.dataTransfer.files[0];
       const reader = new FileReader();
-  
+
       reader.onload = () => {
-        this.selectedImage = reader.result; // Charge le fichier comme URL base64
+        this.selectedImage = reader.result; 
       };
-  
-      reader.readAsDataURL(file); // Charge le fichier en base64
-      console.log('File dropped:', file.name);
+
+      reader.readAsDataURL(this.imageFile);
     }
   }
+
   onPaste(event: ClipboardEvent): void {
-    // Vérifiez si l'événement contient des fichiers
     if (event.clipboardData) {
       const items = event.clipboardData.items;
       for (let i = 0; i < items.length; i++) {
@@ -95,18 +173,17 @@ export class FileUploadComponent {
         if (item.type.startsWith('image/')) {
           const file = item.getAsFile();
           if (file) {
+            this.imageFile = file;
             const reader = new FileReader();
-  
+
             reader.onload = () => {
-              this.selectedImage = reader.result; // Charge l'image comme URL base64
+              this.selectedImage = reader.result;
             };
-  
+
             reader.readAsDataURL(file);
-            console.log('Image pasted:', file.name);
           }
         }
       }
     }
   }
-  
 }

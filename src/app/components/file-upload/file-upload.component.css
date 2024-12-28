@@ -131,8 +131,9 @@
 .form-submit-button {
   width: auto; /* Makes the button width dynamic */
   max-width: 300px; /* Matches the input fields' width */
-  margin-top: 10px; /* Adds spacing above the button */
+  margin: 20px; /* Adds spacing above the button */
   padding: 15px;
+  margin-left: auto; /* Centers the button horizontally */
   font-size: 16px;
   background-color: #007bff;
   color: white;
