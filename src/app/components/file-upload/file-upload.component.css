@@ -1,105 +1,80 @@
 .upload-container {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 30px; /* Ajoute plus d'espace interne */
-  border: 2px solid #ccc; /* Bordure plus épaisse */
-  border-radius: 10px; /* Coins légèrement arrondis */
-  width: 90%; /* Augmente la largeur du conteneur */
-  max-width: 1200px; /* Limite la largeur maximale */
-  margin: 30px auto; /* Centrer le conteneur sur la page */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Effet d'ombre pour une meilleure visibilité */
-  background-color: #f9f9f9; /* Couleur de fond douce */
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.upload-left {
+.upload-left, .upload-right {
   flex: 1;
-  margin-right: 20px;
+  min-width: 300px;
 }
 
 .upload-header {
-  font-size: 16px; /* Texte plus grand */
+  text-align: center;
   margin-bottom: 20px;
 }
 
 .upload-actions {
-  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
 }
 
 .browse-button {
-  padding: 12px 25px; /* Bouton plus grand */
-  background-color: #007bff;
+  padding: 10px 20px;
+  background: #007bff;
   color: white;
   border: none;
-  border-radius: 5px;
-  font-size: 16px; /* Taille du texte plus grande */
+  border-radius: 4px;
   cursor: pointer;
+  transition: background 0.3s;
 }
 
 .browse-button:hover {
-  background-color: #0056b3;
-}
-
-.upload-right {
-  flex: 1;
-  text-align: center;
-  padding: 20px;
-  border-left: 2px solid #ddd; /* Bordure gauche plus visible */
+  background: #0056b3;
 }
 
 .preview-image {
-  max-width: 100%; /* Utilise toute la largeur disponible */
-  max-height: 400px; /* Limite la hauteur de l'image */
-  border: 2px solid #ddd; /* Bordure autour de l'image */
-  border-radius: 10px; /* Coins arrondis pour l'image */
-  margin-bottom: 20px;
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin: 10px 0;
 }
 
 .button-group {
   display: flex;
-  justify-content: center;
-  gap: 20px; /* Espacement entre les boutons */
+  gap: 10px;
+  margin-top: 10px;
 }
 
-.button-group button {
-  padding: 12px 20px;
-  font-size: 16px;
+.submit-button, .clear-button {
+  padding: 8px 16px;
   border: none;
-  border-radius: 5px;
-  color: white;
+  border-radius: 4px;
   cursor: pointer;
+  transition: background 0.3s;
 }
 
 .submit-button {
-  background-color: #28a745;
-}
-
-.submit-button:hover {
-  background-color: #218838;
+  background: #28a745;
+  color: white;
 }
 
 .clear-button {
-  background-color: #dc3545;
+  background: #dc3545;
+  color: white;
 }
 
-.clear-button:hover {
-  background-color: #c82333;
-}
-
-/* Styles for the form */
 .form-container {
-  display: flex; /* Enables flexbox */
-  justify-content: left; /* Centers the form horizontally */
-  align-items: left; /* Centers the form vertically */
-  padding: 30px; /* Ajoute plus d'espace interne */
-  border: 2px solid #ccc; /* Bordure plus épaisse */
-  border-radius: 10px; /* Coins légèrement arrondis */
-  width: 90%; /* Augmente la largeur du conteneur */
-  max-width: 1200px; /* Limite la largeur maximale */
-  margin: 30px auto; /* Centrer le conteneur sur la page */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Effet d'ombre pour une meilleure visibilité */
-  background-color: #f9f9f9;
-  
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .form-group {
@@ -108,40 +83,49 @@
 
 .form-group label {
   display: block;
-  font-size: 14px;
-  font-weight: bold;
   margin-bottom: 5px;
+  font-weight: bold;
 }
 
 .form-group input {
-  width: 200%; /* Default full width for responsiveness */
-  max-width: 700px; /* Limit the input field width */
-  padding: 10px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.form-group input:focus {
-  border-color: #007bff;
-  outline: none;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
 }
 
 .form-submit-button {
-  width: auto; /* Makes the button width dynamic */
-  max-width: 300px; /* Matches the input fields' width */
-  margin: 20px; /* Adds spacing above the button */
-  padding: 15px;
-  margin-left: auto; /* Centers the button horizontally */
-  font-size: 16px;
-  background-color: #007bff;
+  background: #007bff;
   color: white;
+  padding: 10px 20px;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
+  margin-right: 10px;
+  transition: background 0.3s;
 }
 
 .form-submit-button:hover {
-  background-color: #0056b3;
+  background: #0056b3;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .upload-container {
+    flex-direction: column;
+  }
+
+  .upload-left, .upload-right {
+    width: 100%;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .form-submit-button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
 }
