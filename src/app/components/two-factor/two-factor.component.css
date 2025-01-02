@@ -1,0 +1,91 @@
+/* Container styling */
+form {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border-radius: 10px;
+    background: linear-gradient(145deg, #ffffff, #e6e6e6); /* Existing gradient */
+    background-color: #e6f7ff; /* Added light blue background color */
+    background: linear-gradient(145deg, #ffffff, #e6e6e6);
+    box-shadow: 5px 5px 15px #d9d9d9, -5px -5px 15px #ffffff;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    justify-content: center; 
+  height: 300px; 
+  }
+  
+  /* Form title */
+  h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+    text-transform: uppercase;
+    text-align: center;
+
+  }
+  
+  /* Input field styling */
+  input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    background: #f0f0f0;
+    box-shadow: inset 2px 2px 5px #d9d9d9, inset -2px -2px 5px #ffffff;
+    font-size: 16px;
+    outline: none;
+    color: #555;
+  }
+  
+  /* Input focus effect */
+  input[type="text"]:focus {
+    background: #e6e6e6;
+    box-shadow: inset 2px 2px 5px #d9d9d9, inset -2px -2px 5px #ffffff, 0px 0px 8px rgba(100, 150, 250, 0.5);
+  }
+  
+  /* Button styling */
+  button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    background: linear-gradient(145deg, #6c63ff, #5a54e3);
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1), -2px -2px 10px rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  /* Button hover effect */
+  button:hover {
+    background: linear-gradient(145deg, #5a54e3, #6c63ff);
+    transform: scale(1.02);
+    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2), -4px -4px 15px rgba(255, 255, 255, 0.2);
+  }
+  
+  /* Error message styling */
+  div[style="color: red;"] {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #ff4d4d;
+  }
+  
+  /* Success message styling */
+  div[style="color: green;"] {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #28a745;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 500px) {
+    form {
+      width: 90%;
+      padding: 15px;
+    }
+  }
+  
