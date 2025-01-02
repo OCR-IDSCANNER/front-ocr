@@ -1,74 +1,121 @@
-/* Container centré */
 .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: linear-gradient(135deg, #2550b3, #acb6e5);
-    font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #2550b3, #acb6e5);
+  font-family: Arial, sans-serif;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.login-form {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.login-form h2 {
+  margin-bottom: 1.5rem;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #555;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  outline: none;
+  box-sizing: border-box;
+  transition: border 0.3s;
+  -webkit-appearance: none;
+}
+
+.form-group input:focus {
+  border-color: #74ebd5;
+}
+
+button {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 4px;
+  background: #2550b3;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:hover {
+  background: #5ac0c1;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+.signup-link {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 0.9rem;
+}
+
+.signup-link a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.signup-link a:hover {
+  text-decoration: underline;
+}
+
+/* Mobile-specific styles */
+@media screen and (max-width: 480px) {
+  .login-container {
+    padding: 0.5rem;
   }
   
-  /* Formulaire */
   .login-form {
-    background: #fff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
+    padding: 1rem;
   }
   
-  /* Titre */
   .login-form h2 {
-    margin-bottom: 1.5rem;
-    color: #333;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
   }
   
-  /* Groupes de champs */
   .form-group {
-    margin-bottom: 1.5rem;
-    text-align: left;
+    margin-bottom: 1rem;
   }
   
-  /* Labels */
-  .form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: #555;
-    font-weight: bold;
-  }
-  
-  /* Champs de saisie */
   .form-group input {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-    outline: none;
-    box-sizing: border-box;
-    transition: border 0.3s;
+    padding: 0.6rem;
+    font-size: 16px; /* Prevents iOS zoom on focus */
   }
   
-  .form-group input:focus {
-    border-color: #74ebd5;
-  }
-  
-  /* Bouton */
   button {
-    width: 100%;
-    padding: 0.75rem;
-    border: none;
-    border-radius: 4px;
-    background: #2550b3;
-    color: #fff;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s;
+    padding: 0.6rem;
   }
-  
-  button:hover {
-    background: #5ac0c1;
-  }
+}
