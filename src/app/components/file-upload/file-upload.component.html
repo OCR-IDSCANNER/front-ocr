@@ -1,10 +1,4 @@
-<div
-  class="upload-container"
-  (dragover)="onDragOver($event)"
-  (dragleave)="onDragLeave($event)"
-  (drop)="onDrop($event)"
-  (paste)="onPaste($event)"
->
+<div class="upload-container">
   <div class="upload-left">
     <div class="upload-header">
       <p>Drop, Upload, or Paste image</p>
@@ -12,12 +6,7 @@
     </div>
     <div class="upload-actions">
       <button class="browse-button" (click)="fileInput.click()">📂 Browse</button>
-      <input
-        type="file"
-        #fileInput
-        (change)="onFileSelect($event)"
-        style="display: none;"
-      />
+      <input type="file" #fileInput (change)="onFileSelect($event)" style="display: none;" />
     </div>
   </div>
 
@@ -32,58 +21,28 @@
 </div>
 
 <div class="form-container">
-  <form (ngSubmit)="onFormSubmit()">
+  <form (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="carteType">Student Carte:</label>
-      <input
-        type="text"
-        id="carteType"
-        [(ngModel)]="carteType"
-        name="carteType"
-        required
-      />
+      <input type="text" id="carteType" [(ngModel)]="cardType" name="carteType" required />
     </div>
     <div class="form-group">
-      <label for="studentName">Student Name :</label>
-      <input
-        type="text"
-        id="studentName"
-        [(ngModel)]="studentName"
-        name="studentName"
-        required
-      />
+      <label for="studentName">Student Name:</label>
+      <input type="text" id="studentName" [(ngModel)]="studentName" name="studentName" required />
     </div>
     <div class="form-group">
       <label for="schoolYear">School Year:</label>
-      <input
-        type="text"
-        id="schoolYear"
-        [(ngModel)]="schoolYear"
-        name="schoolYear"
-        required
-      />
+      <input type="text" id="schoolYear" [(ngModel)]="schoolYear" name="schoolYear" required />
     </div>
     <div class="form-group">
       <label for="SchoolLevel">School Level:</label>
-      <input
-        type="text"
-        id="SchoolLevel"
-        [(ngModel)]="idCode"
-        name="SchoolLevel"
-        required
-      />
+      <input type="text" id="SchoolLevel" [(ngModel)]="studentLevel" name="SchoolLevel" required />
     </div>
     <div class="form-group">
-      <label for="SchoolAdress">School Adress:</label>
-      <input
-        type="text"
-        id="SchoolAdress"
-        [(ngModel)]="idCode"
-        name="SchoolAdress"
-        required
-      />
+      <label for="SchoolAdress">School Address:</label>
+      <input type="text" id="SchoolAdress" [(ngModel)]="schoolAdress" name="SchoolAdress" required />
     </div>
-    
-    <button type="submit" class="form-submit-button">Submit</button>
+    <button type="submit" class="form-submit-button" (click)="onSubmit2()">Submit</button>
+    <button type="button" class="form-submit-button" (click)="generatePDF()">Download PDF</button>
   </form>
 </div>

@@ -76,18 +76,18 @@ button:active {
   transform: scale(0.98);
 }
 
-.signin-redirect {
+.signup-link {
   text-align: center;
   margin-top: 15px;
   font-size: 0.9rem;
 }
 
-.signin-redirect a {
+.signup-link a {
   color: #007bff;
   text-decoration: none;
 }
 
-.signin-redirect a:hover {
+.signup-link a:hover {
   text-decoration: underline;
 }
 

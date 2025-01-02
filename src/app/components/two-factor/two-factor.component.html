@@ -1,0 +1,20 @@
+<h2>Two-Factor Authentication</h2>
+<form (ngSubmit)="onSubmit()">
+  <label for="otp">Enter Code</label>
+  <input
+    type="text"
+    id="otp"
+    [(ngModel)]="otp"
+    name="otp"
+    placeholder="Enter your Code"
+    required
+  />
+  <button type="submit">Verify</button>
+</form>
+
+<div *ngIf="errorMessage" style="color: red;">
+  {{ errorMessage }}
+</div>
+<div *ngIf="successMessage" style="color: green;">
+  {{ successMessage }}
+</div>
