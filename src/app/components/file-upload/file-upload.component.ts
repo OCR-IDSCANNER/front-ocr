@@ -26,9 +26,9 @@ export class FileUploadComponent {
   constructor(private http: HttpClient) {}
 
    // Unified image selection
-   handleFileInput(event: Event): void {
+   onFileSelect(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
+    if (input.files && input.files.length > 0) {
       this.imageFile = input.files[0];
       const reader = new FileReader();
 

@@ -16,7 +16,7 @@
       <input
         type="file"
         #fileInput
-        (change)="handleFileInput($event)"
+        (change)="onFileSelect($event)"
         style="display: none;"
       />
 
@@ -29,7 +29,7 @@
         id="cameraInput" 
         accept="image/*" 
         capture="environment" 
-        (change)="handleFileInput($event)" 
+        (change)="onFileSelect($event)" 
         hidden 
       />
     </div>
@@ -99,6 +99,6 @@
     </div>   
     
     <button type="submit" class="form-submit-button" (click)="onSubmit2()">Submit</button>
-    <button type="button" class="form-submit-button" (click)="generatePDF()">Download PDF</button>
+    <button type="submit" class="form-submit-button" (click)="generatePDF()">Download PDF</button>
   </form>
 </div>
