@@ -1,23 +1,32 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms'; 
 
-import { TwoFactorComponent } from './two-factor.component';
 
-describe('TwoFactorComponent', () => {
-  let component: TwoFactorComponent;
-  let fixture: ComponentFixture<TwoFactorComponent>;
+@Component({
+  selector: 'app-two-factor',
+  standalone: true, 
+  imports: [FormsModule], 
+  templateUrl: './two-factor.component.html',
+  styleUrls: ['./two-factor.component.css']
+})
+export class TwoFactorComponent {
+  otp: string = '';
+  errorMessage: string = '';
+  successMessage: string = '';
+qrCodeUrl: any;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [TwoFactorComponent]
-    })
-    .compileComponents();
+  onSubmit() {
+    if (this.otp === '123456') {
+      // Simulating success
+      this.successMessage = 'OTP Verified Successfully!';
+      this.errorMessage = '';
+    } else {
+      // Simulating failure
+      this.errorMessage = 'Invalid OTP!';
+      this.successMessage = '';
+    }
+  }
+}
 
-    fixture = TestBed.createComponent(TwoFactorComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+

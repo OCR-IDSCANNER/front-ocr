@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -22,8 +23,7 @@ export class FileUploadComponent {
   studentLevel: string = '';
   schoolAdress: string = '';
   idCode: string = '';
-
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   onFileSelect(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -185,5 +185,10 @@ export class FileUploadComponent {
         }
       }
     }
+  }
+  logout(){
+    localStorage.removeItem('token');
+    alert('Logout successful! Redirecting to login...');
+    this.router.navigate(['/login']);
   }
 }
