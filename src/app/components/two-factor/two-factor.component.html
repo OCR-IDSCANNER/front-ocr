@@ -1,4 +1,19 @@
-<h2>Two-Factor Authentication</h2>
+<h2>Two-Factor Authentication Setup</h2>
+
+<!-- Display the QR Code -->
+<div *ngIf="qrCodeUrl" class="qr-code-container">
+  <p class="qr-instructions">Scan this QR code with your authenticator app to set up Two-Factor Authentication:</p>
+  <img [src]="qrCodeUrl" alt="QR Code"  class="qr-code" />
+</div>
+
+<div *ngIf="errorMessage" style="color: red;">
+  {{ errorMessage }}
+</div>
+<div *ngIf="successMessage" style="color: green;">
+  {{ successMessage }}
+</div>
+
+<!-- OTP Verification Form -->
 <form (ngSubmit)="onSubmit()">
   <label for="otp">Enter Code</label>
   <input
@@ -11,10 +26,3 @@
   />
   <button type="submit">Verify</button>
 </form>
-
-<div *ngIf="errorMessage" style="color: red;">
-  {{ errorMessage }}
-</div>
-<div *ngIf="successMessage" style="color: green;">
-  {{ successMessage }}
-</div>

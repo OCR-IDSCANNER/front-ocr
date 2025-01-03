@@ -4,9 +4,7 @@ import { Routes } from '@angular/router';
 import {LoginComponent} from './login/login.component';
 import { TwoFactorComponent } from './components/two-factor/two-factor.component';
 
-
 export const appRoutes: Routes = [
-  { path: '', redirectTo: '/signup', pathMatch: 'full' },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'upload', component: FileUploadComponent },

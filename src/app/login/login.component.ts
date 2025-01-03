@@ -27,20 +27,23 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      console.log(this.loginForm.value);
       const requestBody = {
         email: this.loginForm.value.email,
         password: this.loginForm.value.password
       };
-      this.http.post('http://localhost:8080/api/auth/login', requestBody).subscribe({
-        next: (response) => {
-          console.log('API Response:', response);
+  
+      this.http.post('http://localhost:8080/api/auth/login', requestBody, {
+        responseType: 'text'
+      }).subscribe({
+        next: (token: string) => {
+          console.log('Received token:', token);
+          localStorage.setItem('token', token);
           alert('Login successful! Redirecting to dashboard...');
-          this.router.navigate(['/upload']); // Redirect after login
+          this.router.navigate(['/2fa']);
         },
         error: (error) => {
-          alert('Login failed! Please try again.');
-          console.error('Error:', error);
+          console.error('Error details:', error);
+          alert('An unexpected error occurred. Please try again.');
         },
       });
     }
