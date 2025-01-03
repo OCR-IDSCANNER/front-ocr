@@ -25,19 +25,30 @@ export class FileUploadComponent {
 
   constructor(private http: HttpClient) {}
 
-  onFileSelect(event: Event): void {
+   // Unified image selection
+   handleFileInput(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
+    if (input.files && input.files[0]) {
       this.imageFile = input.files[0];
       const reader = new FileReader();
 
       reader.onload = () => {
-        this.selectedImage = reader.result; 
+        this.selectedImage = reader.result; // Display selected image
       };
 
       reader.readAsDataURL(this.imageFile); 
     }
   }
+
+  // Opens the camera input
+  openCamera(): void {
+    const cameraInput = document.getElementById('cameraInput') as HTMLInputElement;
+    if (cameraInput) {
+      cameraInput.click();
+    }
+  }
+
+
 
   onSubmit(): void {
     if (!this.imageFile) {

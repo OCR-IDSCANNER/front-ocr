@@ -24,6 +24,8 @@
 
 .upload-actions {
   margin-bottom: 30px;
+  display: flex;
+  gap: 10px; /* Adds spacing between buttons */
 }
 
 .browse-button {
@@ -38,6 +40,21 @@
 
 .browse-button:hover {
   background-color: #0056b3;
+}
+
+/* New styles for "Take a Picture" button */
+.take-picture-button {
+  padding: 12px 25px; /* Size similar to other buttons */
+  background-color: #ffc107; /* Distinct yellow color for camera action */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px; /* Matching the other button styles */
+  cursor: pointer;
+}
+
+.take-picture-button:hover {
+  background-color: #e0a800; /* Slightly darker yellow on hover */
 }
 
 .upload-right {
@@ -99,7 +116,6 @@
   margin: 30px auto; /* Centrer le conteneur sur la page */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Effet d'ombre pour une meilleure visibilité */
   background-color: #f9f9f9;
-  
 }
 
 .form-group {
