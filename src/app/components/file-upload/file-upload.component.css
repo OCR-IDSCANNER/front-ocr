@@ -1,3 +1,26 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.user-info {
+  font-size: 1rem;
+  color: #333;
+}
+
+.logout-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
 .upload-container {
   display: flex;
   flex-wrap: wrap;
@@ -6,6 +29,7 @@
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin: 20px;
 }
 
 .upload-left, .upload-right {
@@ -21,53 +45,110 @@
 .upload-actions {
   display: flex;
   justify-content: center;
+  gap: 10px;
 }
 
-.browse-button {
-  padding: 10px 20px;
-  background: #007bff;
+.browse-button, .camera-button {
+  padding: 12px 25px;
+  background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
+  font-size: 16px;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.camera-button {
+  background-color: #28a745;
 }
 
 .browse-button:hover {
-  background: #0056b3;
+  background-color: #0056b3;
+}
+
+.camera-button:hover {
+  background-color: #218838;
+}
+
+/* Cropper Styles */
+.cropper-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+::ng-deep image-cropper {
+  max-height: 400px;
+  display: block !important;
+}
+
+::ng-deep .cropper {
+  background-color: #f8f9fa;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+}
+
+.cropper-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Preview Section */
+.preview-section {
+  text-align: center;
+  padding: 20px;
 }
 
 .preview-image {
   max-width: 100%;
-  height: auto;
+  max-height: 400px;
+  border: 2px solid #ddd;
   border-radius: 4px;
   margin: 10px 0;
 }
 
 .button-group {
   display: flex;
+  justify-content: center;
   gap: 10px;
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
 .submit-button, .clear-button {
-  padding: 8px 16px;
+  padding: 10px 20px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background-color 0.3s;
+  font-size: 14px;
 }
 
 .submit-button {
-  background: #28a745;
+  background-color: #28a745;
   color: white;
+}
+
+.submit-button:hover {
+  background-color: #218838;
 }
 
 .clear-button {
-  background: #dc3545;
+  background-color: #dc3545;
   color: white;
 }
 
+.clear-button:hover {
+  background-color: #c82333;
+}
+
+/* Form Styles */
 .form-container {
   max-width: 800px;
   margin: 20px auto;
@@ -85,6 +166,7 @@
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
+  color: #333;
 }
 
 .form-group input {
@@ -93,6 +175,12 @@
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #007bff;
 }
 
 .form-submit-button {
@@ -103,14 +191,13 @@
   border-radius: 4px;
   cursor: pointer;
   margin-right: 10px;
-  transition: background 0.3s;
+  transition: background-color 0.3s;
 }
 
 .form-submit-button:hover {
   background: #0056b3;
 }
 
-/* Media Queries for Responsiveness */
 @media (max-width: 768px) {
   .upload-container {
     flex-direction: column;
@@ -120,6 +207,15 @@
     width: 100%;
   }
 
+  .upload-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .camera-button {
+    margin-top: 10px;
+  }
+
   .button-group {
     flex-direction: column;
   }
@@ -127,5 +223,18 @@
   .form-submit-button {
     width: 100%;
     margin-bottom: 10px;
+    margin-right: 0;
   }
+}
+
+/* Image Cropper Overrides */
+::ng-deep .cropper {
+  border: 1px solid #ccc !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+}
+
+::ng-deep .move {
+  border: 2px solid #007bff !important;
+  border-radius: 4px !important;
 }

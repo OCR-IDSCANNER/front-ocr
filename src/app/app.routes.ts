@@ -10,5 +10,4 @@ export const appRoutes: Routes = [
   { path: 'upload', component: FileUploadComponent },
   { path: '2fa', component: TwoFactorComponent },
   { path: 'signup', component: SignupComponent }
-
 ];
