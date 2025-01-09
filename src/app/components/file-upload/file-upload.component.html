@@ -1,4 +1,12 @@
-<div class="upload-container">
+<!-- file-upload.component.html -->
+<div class="header">
+  <div class="user-info">
+    <span>Welcome, {{ username }}</span>
+  </div>
+  <button class="logout-button" (click)="logout()">Logout</button>
+</div>
+
+<div class="upload-container" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)" (paste)="onPaste($event)">
   <div class="upload-left">
     <div class="upload-header">
       <p>Drop, Upload, or Paste image</p>
@@ -6,16 +14,42 @@
     </div>
     <div class="upload-actions">
       <button class="browse-button" (click)="fileInput.click()">📂 Browse</button>
-      <input type="file" #fileInput (change)="onFileSelect($event)" style="display: none;" />
+      <button class="camera-button" (click)="openCamera()" *ngIf="isMobile">📸 Scan with Mobile</button>
+      <input #fileInput type="file" (change)="onFileSelect($event)" style="display: none;" accept="image/*" />
+      <input #cameraInput type="file" (change)="onFileSelect($event)" accept="image/*" capture="environment" style="display: none;" />
     </div>
   </div>
 
   <div *ngIf="selectedImage" class="upload-right">
-    <h3>Selected Image:</h3>
-    <img [src]="selectedImage" alt="Preview" class="preview-image" />
-    <div class="button-group">
-      <button (click)="onSubmit()" class="submit-button">Submit</button>
-      <button (click)="clearSelection()" class="clear-button">Clear</button>
+    <h3>Image Preview:</h3>
+    
+    <!-- Image Cropper -->
+    <div *ngIf="showCropper" class="cropper-container">
+      <image-cropper
+        [imageChangedEvent]="imageChangedEvent"
+        [maintainAspectRatio]="false"
+        [resizeToWidth]="800"
+        format="png"
+        (imageCropped)="imageCropped($event)"
+        (loadImageFailed)="loadImageFailed()"
+        [roundCropper]="false"
+        [cropperMinWidth]="100"
+        [cropperMinHeight]="100"
+        [onlyScaleDown]="false"
+      ></image-cropper>
+      <div class="cropper-actions">
+        <button (click)="finishCropping()" class="submit-button">Crop</button>
+        <button (click)="cancelCropping()" class="clear-button">Cancel</button>
+      </div>
+    </div>
+    
+    <!-- Image Preview -->
+    <div *ngIf="!showCropper" class="preview-section">
+      <img [src]="selectedImage" alt="Preview" class="preview-image" />
+      <div class="button-group">
+        <button (click)="onSubmit()" class="submit-button">Submit</button>
+        <button (click)="clearSelection()" class="clear-button">Clear</button>
+      </div>
     </div>
   </div>
 </div>
@@ -23,7 +57,7 @@
 <div class="form-container">
   <form (ngSubmit)="onSubmit()">
     <div class="form-group">
-      <label for="carteType">Student Carte:</label>
+      <label for="carteType">Student Card:</label>
       <input type="text" id="carteType" [(ngModel)]="cardType" name="carteType" required />
     </div>
     <div class="form-group">
