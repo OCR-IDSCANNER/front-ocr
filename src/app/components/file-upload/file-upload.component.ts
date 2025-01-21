@@ -17,7 +17,8 @@ import { Router } from '@angular/router';
 export class FileUploadComponent {
   @ViewChild('cameraInput') cameraInput!: ElementRef;
   
-  selectedImage: string | ArrayBuffer | null = null;
+  originalImage: string | ArrayBuffer | null = null;  // Store original image
+  selectedImage: string | ArrayBuffer | null = null;  // Display image (either original or cropped)
   imageFile: File | null = null;
   apiResponse: any = {};
   showQRModal: boolean = false;
@@ -36,6 +37,15 @@ export class FileUploadComponent {
   schoolAdress: string = '';
   idCode: string = '';
 
+  imageStyles = {
+    width: '100%',
+    height: 'auto',
+    maxHeight: '400px',
+    objectFit: 'contain' as const
+  };
+  
+  isLoading: boolean | undefined;
+  
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit() {
@@ -69,7 +79,31 @@ export class FileUploadComponent {
   }
 
   imageCropped(event: ImageCroppedEvent) {
-    this.croppedImage = event.base64;
+    console.log('Cropped event:', event);
+    
+    if (event.objectUrl && event.blob) {
+      // Store the blob URL for preview
+      this.croppedImage = event.objectUrl;
+      
+      // Create File directly from the blob
+      this.imageFile = new File([event.blob], 'cropped_image.png', { type: 'image/png' });
+    } else if (event.base64) {
+      // Fallback to base64 if objectUrl is not available
+      this.croppedImage = event.base64;
+      
+      // Convert base64 to blob
+      const byteString = atob(event.base64.split(',')[1]);
+      const mimeString = event.base64.split(',')[0].split(':')[1].split(';')[0];
+      const ab = new ArrayBuffer(byteString.length);
+      const ia = new Uint8Array(ab);
+      
+      for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+      }
+      
+      const blob = new Blob([ab], { type: mimeString });
+      this.imageFile = new File([blob], 'cropped_image.png', { type: 'image/png' });
+    }
   }
 
   loadImageFailed() {
@@ -78,39 +112,45 @@ export class FileUploadComponent {
 
   finishCropping() {
     if (this.croppedImage) {
+      // Update the preview with the cropped image
       this.selectedImage = this.croppedImage;
-      // Convert base64 to File object
-      fetch(this.croppedImage)
-        .then(res => res.blob())
-        .then(blob => {
-          this.imageFile = new File([blob], 'cropped_image.png', { type: 'image/png' });
-          this.showCropper = false;
-        })
-        .catch(error => {
-          console.error('Error converting cropped image:', error);
-        });
+      // Hide the cropper
+      this.showCropper = false;
     }
   }
 
   cancelCropping() {
     this.showCropper = false;
-    this.selectedImage = null;
-    this.imageFile = null;
+    // Keep the original image when canceling crop
+    if (this.originalImage) {
+      this.selectedImage = this.originalImage;
+      // Convert original image back to File if needed
+      fetch(this.originalImage.toString())
+        .then(res => res.blob())
+        .then(blob => {
+          this.imageFile = new File([blob], 'original_image.png', { type: 'image/png' });
+        })
+        .catch(error => {
+          console.error('Error converting original image:', error);
+        });
+    }
   }
   
   onFileSelect(event: Event): void {
     this.imageChangedEvent = event;
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      this.imageFile = input.files[0];
+      const file = input.files[0];
+      this.imageFile = file;
       const reader = new FileReader();
 
       reader.onload = () => {
-        this.selectedImage = reader.result;
-        this.showCropper = true;  
+        this.originalImage = reader.result;  // Store original image
+        this.selectedImage = reader.result;  // Display original image
+        this.showCropper = true;  // Show cropper but user can cancel if they don't want to crop
       };
 
-      reader.readAsDataURL(this.imageFile);
+      reader.readAsDataURL(file);
     }
   }
 
@@ -126,31 +166,55 @@ export class FileUploadComponent {
     this.showQRModal = false;
   }
 
-  onSubmit(): void {
-    if (!this.imageFile) {
-      console.error('No image selected!');
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('image', this.imageFile); 
-
-    this.http.post('http://192.168.1.99:8180/ocr', formData).subscribe({
-      next: (response) => {
-        console.log('API Response:', response);
-        this.apiResponse = response;
-
-        this.studentName = this.apiResponse?.nom_etudiant || '';
-        this.schoolYear = this.apiResponse?.annee_unv || '';
-        this.studentLevel = this.apiResponse?.niveau || '';
-        this.schoolAdress = '5 Lot Bouizgren-Route de Safi Marrakech';
-        this.cardType= this.apiResponse?.is_student_card || '';
-      },
-      error: (error) => {
-        console.error('Error:', error);
-      },
-    });
+  // Update the onSubmit method in file-upload.component.ts
+onSubmit(): void {
+  if (!this.imageFile) {
+    console.error('No image selected!');
+    return;
   }
+
+  const formData = new FormData();
+  formData.append('image', this.imageFile);
+
+  // Add loading state
+  this.isLoading = true;
+
+  this.http.post('http://localhost:8180/ocr', formData, {
+    headers: {
+      // Remove Content-Type header to let browser set it with boundary
+      Accept: 'application/json',
+    },
+    // Add timeout and response type
+    observe: 'response',
+    responseType: 'json'
+  }).subscribe({
+    next: (response) => {
+      console.log('API Response:', response.body);
+      this.apiResponse = response.body;
+      if (this.apiResponse) {
+        this.studentName = this.apiResponse.nom_etudiant || '';
+        this.schoolYear = this.apiResponse.annee_unv || '';
+        this.studentLevel = this.apiResponse.niveau || '';
+        this.schoolAdress = '5 Lot Bouizgren-Route de Safi Marrakech';
+        this.cardType = this.apiResponse.is_student_card || false;
+      }
+      this.isLoading = false;
+    },
+    error: (error) => {
+      console.error('Error:', error);
+      // Add error handling
+      if (error.status === 0) {
+        alert('Unable to connect to the server. Please check if the server is running.');
+      } else {
+        alert(`Error processing image: ${error.error?.detail || 'Unknown error'}`);
+      }
+      this.isLoading = false;
+    },
+    complete: () => {
+      this.isLoading = false;
+    }
+  });
+}
 
   onSubmit2():void{
     const requestBody = {
@@ -160,7 +224,7 @@ export class FileUploadComponent {
       studentLevel: this.studentLevel,
       schoolAdress: this.schoolAdress,
     };
-    this.http.post('http://192.168.1.99:8081/api/card', requestBody).subscribe({
+    this.http.post('http://localhost:8081/api/card', requestBody).subscribe({
       next: (response) => {
         console.log('API Response:', response);
         this.apiResponse = response;
@@ -242,16 +306,18 @@ export class FileUploadComponent {
   onDrop(event: DragEvent): void {
     event.preventDefault();
     if (event.dataTransfer && event.dataTransfer.files.length > 0) {
-      this.imageFile = event.dataTransfer.files[0];
-      this.imageChangedEvent = { target: { files: [this.imageFile] } };  // Create fake event
+      const file = event.dataTransfer.files[0];
+      this.imageFile = file;
+      this.imageChangedEvent = { target: { files: [file] } };
       const reader = new FileReader();
 
       reader.onload = () => {
+        this.originalImage = reader.result;
         this.selectedImage = reader.result;
         this.showCropper = true;
       };
 
-      reader.readAsDataURL(this.imageFile);
+      reader.readAsDataURL(file);
     }
   }
 
@@ -264,10 +330,11 @@ export class FileUploadComponent {
           const file = item.getAsFile();
           if (file) {
             this.imageFile = file;
-            this.imageChangedEvent = { target: { files: [file] } };  // Create fake event
+            this.imageChangedEvent = { target: { files: [file] } };
             const reader = new FileReader();
 
             reader.onload = () => {
+              this.originalImage = reader.result;
               this.selectedImage = reader.result;
               this.showCropper = true;
             };

@@ -1,31 +1,34 @@
-# Étape 1 : Construction de l'application Angular
-FROM node:22 as build
 
-# Définir le répertoire de travail
+# Build stage
+FROM node:20 AS build
+
+# Set working directory
 WORKDIR /app
 
-# Copier les fichiers package.json et package-lock.json
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Installer les dépendances avec l'option legacy-peer-deps
-RUN npm install --legacy-peer-deps
+# Install dependencies
+RUN npm install
 
-# Copier le reste des fichiers du projet
+# Copy the rest of the application
 COPY . .
 
-# Construire l'application Angular en mode production
-RUN npm run build --prod --skip-tests
+# Build the application
+RUN npm run build --configuration=production
 
-# Étape 2 : Servir l'application avec Nginx
+# Serve stage
 FROM nginx:alpine
 
-# Copier les fichiers de build Angular vers le dossier Nginx
-COPY --from=build /app/dist/front-ocr /usr/share/nginx/html
-# Copier la configuration personnalisée de Nginx
+# Remove default nginx website
+RUN rm -rf /usr/share/nginx/html/*
+
+# Copy built assets from build stage
+COPY --from=build /app/dist/front-ocr/browser/. /usr/share/nginx/html/
+
+# Add nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Exposer le port 80
 EXPOSE 80
 
-# Commande pour démarrer Nginx
 CMD ["nginx", "-g", "daemon off;"]
