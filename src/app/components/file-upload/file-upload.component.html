@@ -24,6 +24,7 @@
     <h3>Image Preview:</h3>
     
     <!-- Image Cropper -->
+    <!-- Replace the existing cropper container div with this updated version -->
     <div *ngIf="showCropper" class="cropper-container">
       <image-cropper
         [imageChangedEvent]="imageChangedEvent"
@@ -36,19 +37,23 @@
         [cropperMinWidth]="100"
         [cropperMinHeight]="100"
         [onlyScaleDown]="false"
+        [style.display]="'block'"
+        [hideResizeSquares]="false"
+        [backgroundColor]="'#fff'"
       ></image-cropper>
       <div class="cropper-actions">
-        <button (click)="finishCropping()" class="submit-button">Crop</button>
-        <button (click)="cancelCropping()" class="clear-button">Cancel</button>
+        <button (click)="finishCropping()" class="action-button submit">Apply Crop</button>
+        <button (click)="cancelCropping()" class="action-button cancel">Cancel</button>
       </div>
     </div>
-    
-    <!-- Image Preview -->
+
+    <!-- Update the preview section -->
     <div *ngIf="!showCropper" class="preview-section">
-      <img [src]="selectedImage" alt="Preview" class="preview-image" />
+      <img [src]="selectedImage" [ngStyle]="imageStyles" alt="Preview" class="preview-image" />
       <div class="button-group">
-        <button (click)="onSubmit()" class="submit-button">Submit</button>
-        <button (click)="clearSelection()" class="clear-button">Clear</button>
+        <button (click)="showCropper = true" class="action-button edit">Edit</button>
+        <button (click)="onSubmit()" class="action-button submit">Submit</button>
+        <button (click)="clearSelection()" class="action-button clear">Clear</button>
       </div>
     </div>
   </div>
@@ -78,6 +83,10 @@
     </div>
     <button type="submit" class="form-submit-button" (click)="onSubmit2()">Submit</button>
     <button type="button" class="form-submit-button" (click)="generatePDF()">Download PDF</button>
-    <button type="button" class="form-submit-button" (click)="logout()">Logout</button>
   </form>
+</div>
+
+<div *ngIf="isLoading" class="loading-overlay">
+  <div class="loading-spinner"></div>
+  <p>Processing image...</p>
 </div>
